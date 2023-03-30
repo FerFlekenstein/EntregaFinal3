@@ -1,6 +1,6 @@
 import prodModel from "./models/prodModel.js";
 import { logger } from "../../middlewares/logger.js";
-class ProductosM{
+class ProductosM {
 
     async save(obj) {
         try {
@@ -11,38 +11,38 @@ class ProductosM{
             logger.error(`error en save: ${error}`)
         }
     }
-    async getById(hash){
+    async getById(hash) {
         try {
-            return await prodModel.findById({_id: hash});
+            return await prodModel.findById({ _id: hash });
         } catch (error) {
             logger.error(`error en getById: ${error}`)
         }
     }
-    async getAll(){
+    async getAll() {
         try {
             return await prodModel.find({});
         } catch (error) {
             logger.error(`error en getAll: ${error}`)
         }
     }
-    async deleteById(hash){
+    async deleteById(hash) {
         try {
-            return await prodModel.deleteOne({_id: hash});
+            return await prodModel.deleteOne({ _id: hash });
         } catch (error) {
             logger.error(`error en deleteById: ${error}`)
         }
     }
-    async deleteAll(){
+    async deleteAll() {
         try {
-            await prodModel.deleteMany({}); 
+            await prodModel.deleteMany({});
         } catch (error) {
             logger.error(`error en deleteAll: ${error}`)
         }
     }
-    async update(obj){
+    async update(obj) {
         try {
-            const {title, price, thumbnail, id} = obj;
-            await prodModel.updateOne({_id : id}, {title, price, thumbnail})  
+            const { title, price, thumbnail, id } = obj;
+            await prodModel.updateOne({ _id: id }, { title, price, thumbnail })
         } catch (error) {
             logger.error(`error en update: ${error}`)
         }

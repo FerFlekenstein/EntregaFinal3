@@ -7,7 +7,7 @@ export const executePolicies = (policies) => {
         const token = req.cookies[config.jwt.cookie];
         if (!token) return res.redirect('/login');
         try {
-            const user = jwt.verify(token, config.jwt.SECRET);
+            const user = jwt.verify(token, config.jwt.cookie);
             if (policies[0] === "AUTHENTICATED") {
                 req.user = user;
                 return next();

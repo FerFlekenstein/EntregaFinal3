@@ -1,10 +1,11 @@
 import { Router } from "express";
-import multer from "multer";
 import ProductosM from "../dao/mongo/productos.js";
 import { executePolicies } from "../middlewares/auth.js";
+import uploader from "../services/upload.js";
+
 const router = new Router();
-const multerUpload = multer();
 const productos = new ProductosM();
+
 router.get("/", async (req, res, next) => {
     const totalProductos = await productos.getAll()
     res.send(JSON.stringify(totalProductos));
@@ -14,9 +15,15 @@ router.get("/:id", async (req, res, next) => {
     const resultado = await productos.getById(id);
     res.send(JSON.stringify(resultado));
 });
-router.post("/", multerUpload.none(), async (req, res, next) => {
-    const prodId = await productos.save(req.body);
-    res.send(JSON.stringify(prodId));
+router.post("/", uploader.single("thumbnail"), async (req, res, next) => {
+    const file = req.file
+    const nuevoProd = {
+        title: req.body.title,
+        price: req.body.price,
+        thumbnail : `${req.protocol}://${req.hostname}:${process.env.PORT}/img/${file.filename}`
+    }
+    const prodBD = await productos.save(nuevoProd);
+    res.send(JSON.stringify(prodBD._id));
 });
 router.put("/:id", async (req, res, next) => {
     if (admin) {
@@ -39,4 +46,5 @@ router.delete("/:id", executePolicies("AUTHENTICATED"), async (req, res, next) =
     const respuesta = await productos.deleteById(id);
     respuesta ? res.send(`El producto con id: ${id} fue eliminado`) : res.json({ error: "producto no encontrado" });
 });
+
 export default router;

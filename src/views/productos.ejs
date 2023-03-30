@@ -14,18 +14,18 @@
       <% if (user) { %>
         <div class="container row justify-content-center">
           <h1>Bienvenido <%= user.nombre %></h1>
-          <a class="btn btn-primary" href="/logout">Desconectar</a>
+          <a class="btn btn-primary" href="api/sessions/logout">Desconectar</a>
         </div>
       <% } %>
       <div class="container row justify-content-center">
-        <form class="p-2 col-md-5" action="/productos" enctype="multipart/form-data" method="post" id="formProd">
+        <form class="p-2 col-md-5" action="/api/productos" enctype="multipart/form-data" method="post" id="formProd">
           <legend class="form-legend">Datos del producto</legend>
           <label for="title" class="form-label">Nombre</label>
           <input type="text" class="form-control" id="title" name="title">
           <label for="price" class="form-label">Precio</label>
           <input type="number" class="form-control" id="price" name="price">
           <label for="thumbnail" class="form-label">Foto URL</label>
-          <input type="text" class="form-control" id="thumbnail" name="thumbnail">
+          <input type="file" class="form-control" id="thumbnail" name="thumbnail">
           <button type="submit" class="btn btn-primary mt-2">Submit</button>
         </form>
       </div>
@@ -39,15 +39,29 @@
               <th scope="col">Precio</th>
               <th scope="col">Imagen</th>
               <th scope="col">Id</th>
+              <th scope="col">Agregar</th>
+              <th scope="col">Restar</th>
             </tr>
           </thead>
-          <tbody id="tProd">
+          <tbody>
+            <% objetos.forEach((producto, indice) => { %>
+              <tr>
+                <th scope="row"><%=producto.title%></th>
+                <td><%=producto.price%></td>
+                <td><%=producto.thumbnail%></td>
+                <td><%=producto.id%></td>
+                <td><button class="btn btn-primary" id="btnSuma<%=indice%>">+</button></td>
+                <td><button class="btn btn-primary" id="btnResta<%=indice%>">-</button></td>
+              </tr>
+            <% }) %>
           </tbody>
         </table>
-        <% } else { %>
-          <h3 class="text-center alert alert-primary">No hay productos</h3>
-          <% } %>
+      <% } else { %>
+        <h3 class="text-center alert alert-primary">No hay productos</h3>
+      <% } %>
     </div>
+    <button class="btn btn-primary" id="Boca">Finalizar compra</button>
   </div>
+  <script src="/js/productos.js"></script>
 </body>
 </html>

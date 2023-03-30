@@ -6,11 +6,24 @@ logForm.addEventListener("submit", async (e) => {
     data.forEach((value, key) => {
         obj[key] = value;
     })
-    fetch('/',{
-        method:'POST',
-        body:JSON.stringify(obj),
+    const result = await fetch('/api/sessions/', {
+        method: 'POST',
+        body: JSON.stringify(obj),
         headers: {
-            'Content-Type':'application/json'
+            "Content-Type": "application/json"
         }
     })
+    if (result.status === 200) {
+        await fetch('/api/carrito', {
+            method: 'POST',
+            body: JSON.stringify(obj),
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+        window.location.replace('/productos')
+    }
+    else {
+        alert("Contraseña incorrecta");
+    }
 })

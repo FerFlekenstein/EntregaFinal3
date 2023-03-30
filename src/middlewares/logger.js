@@ -1,8 +1,8 @@
 import winston from "winston"
 const misLevels = {
-    levels:{
-        error:0,
-        warning:1,
+    levels: {
+        error: 0,
+        warn: 1,
         info: 2
     }
 }
@@ -14,7 +14,7 @@ export const logger = winston.createLogger({
         }),
         new winston.transports.File({
             filename: "./warn.log",
-            level: "warning"
+            level: "warn"
         }),
         new winston.transports.File({
             filename: "./error.log",
